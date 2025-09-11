@@ -53,8 +53,22 @@ class MQTTPublisher:
 
     def on_connect(self,client,userdata,flags,reason_code, properties):
         logger.info(f"Connected Reason code: {reason_code}")
-    def on_disconnect(self,client,userdata,reason_code, properties):
-        logger.info(f"Disconnected, Reason code: {reason_code}")    
+    def on_disconnect(self, client, userdata, reason_code, properties=None):
+        logger.warning(f"Disconnected, Reason code: {reason_code}")
+        retry_delay = 5 
+        max_retries = 10
+
+        for attempt in range(max_retries):
+            try:
+                logger.info(f"Trying to reconnect... attempt {attempt+1}/{max_retries}")
+                client.reconnect()
+                logger.info("Reconnected successfully")
+                return
+            except Exception as e:
+                logger.error(f"Reconnect failed: {e}")
+                time.sleep(retry_delay)
+
+        logger.critical("Max reconnect attempts reached, giving up")
 
     def on_publish(self,client,userdata,mid):
         logger.info(f"Published mid: {mid}")
