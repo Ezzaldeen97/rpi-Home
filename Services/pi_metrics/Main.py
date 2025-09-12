@@ -2,14 +2,16 @@
 from fetch_rpi_metrics import get_cpu_temp,get_storage,get_runtime,get_network_traffic
 from mqttHandler import MQTTPublisher
 import time,json,datetime
-from configs import config
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 publisher = MQTTPublisher(
-        host=config.MQTT_BROKER_HOST,
-        port=config.MQTT_BROKER_PORT,
-        username=config.MQTT_BROKER_USERNAME,
-        password=config.MQTT_BROKER_PASSWORD
+        host=os.getenv("MQTT_BROKER_HOST"),
+        port=os.getenv("MQTT_BROKER_PORT"),
+        username=os.getenv("MQTT_BROKER_USERNAME"),
+        password=os.getenv("MQTT_BROKER_PASSWORD")
     )
 publisher.start()
 
@@ -28,9 +30,11 @@ while True:
     }
 
     for key, value in data.items():
-        payload = json.dumps({"value": value, "ts": ts})
+        if key=="ts":
+            continue
+        payload = json.dumps({"value": float(value), "ts": ts})
         publisher.publish(payload, f"{key}",qos=1)
 
-    time.sleep(config.BUFFER_TIME)
+    time.sleep(os.getenv(BUFFER_TIME))
 
 
