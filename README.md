@@ -2,7 +2,7 @@
 
 **RPi@Home** is a plug-and-play Raspberry Pi IoT device for your home. It is designed to run multiple modular services that collect, process, and publish data about your home environment or the Pi itself.  
 
-![alt text](docs/Project architecture.png)
+![alt text](docs/Project_architecture.png)
 
 ---
 
