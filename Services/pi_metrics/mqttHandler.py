@@ -35,7 +35,7 @@ class MQTTPublisher:
         """
         
         date_str = datetime.now().strftime("%d%m%y")
-        client_id = f"ows-challenge-{date_str}"
+        client_id = f"RPI@Home"
         self.client = paho.Client(client_id=client_id, protocol=paho.MQTTv5)
         self.client.username_pw_set(username, password) #NOTE: username/password are not required but essential for HiveMQ
         self.client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
