@@ -37,7 +37,10 @@ fi
 echo  "${RED}[4/5] Setting up ${SERVICE_NAME} service ${NC}"
 cd "$SERVICE_PATH"
 python3 -m venv venv
-venv/bin/pip install -r requirements.txt
+venv/bin/python -m ensurepip --upgrade
+venv/bin/python -m pip install --upgrade pip
+venv/bin/python -m pip install -r requirements.txt
+
 cd "$PROJECT_DIR"
 echo  "${GREEN} Python dependencies are installed ${NC}"
 
