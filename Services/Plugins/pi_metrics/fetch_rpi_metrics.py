@@ -42,3 +42,12 @@ def get_network_traffic():
         download_traffic = round(int(f.read().strip())/1000,2)        
     return f"{upload_traffic}", f"{download_traffic} "
     
+def get_cpu_usage():
+    cpu = psutil.cpu_percent()
+    print(cpu)
+    return cpu
+
+def get_memory_usage():
+    memory= psutil.virtual_memory().percent
+    print(memory)
+    return memory

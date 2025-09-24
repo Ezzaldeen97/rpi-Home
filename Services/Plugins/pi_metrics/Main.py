@@ -1,5 +1,5 @@
 
-from fetch_rpi_metrics import get_cpu_temp,get_storage,get_runtime,get_network_traffic
+from fetch_rpi_metrics import get_cpu_temp,get_storage,get_runtime,get_network_traffic,get_cpu_usage,get_memory_usage
 import time,json,datetime
 import os
 from dotenv import load_dotenv
@@ -21,6 +21,8 @@ while True:
         "runtime": get_runtime(),
         "upload_traffic": get_network_traffic()[0],
         "download_traffic": get_network_traffic()[1],
+        "memory_usage":get_memory_usage(),
+        "cpu_usage":get_cpu_usage(),
         "ts": ts
     }
 
