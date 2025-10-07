@@ -4,10 +4,9 @@ import time, psutil
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
-from utils.logger import get_logger
+sys.path.append("/usr/local/bin")  
+from logcli import log_message
 
-
-logger = get_logger("rpi_meta_data", file_name='logs/rpi_meta_data.log')
 
 def get_cpu_temp():
     "Read the RPI CPU temperature"
@@ -16,7 +15,7 @@ def get_cpu_temp():
             temp = int(f.read().strip()) / 1000.0
         return f"{temp:.1f}"
     except Exception as e:
-        logger.ERROR(f"Could not read the cpu temperature: {e}")
+        log_message("WARNING", f"Could not read the cpu temperature: {e}", "pi-metrics-service.log")
         
 
 
@@ -44,10 +43,8 @@ def get_network_traffic():
     
 def get_cpu_usage():
     cpu = psutil.cpu_percent()
-    print(cpu)
     return cpu
 
 def get_memory_usage():
     memory= psutil.virtual_memory().percent
-    print(memory)
     return memory
