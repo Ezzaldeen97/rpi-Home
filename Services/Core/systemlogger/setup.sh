@@ -1,18 +1,25 @@
 #!/bin/bash
+set -e
 
-SCRIPT_NAME="logcli.py"
-SRC_DIR="$(cd "$(dirname "$0")" && pwd)"  
-DEST_DIR="/usr/local/bin"
-DEST_PATH="$DEST_DIR/logcli"
+INSTALL_DIR="/usr/local/bin/core"
+BIN_DIR="/usr/local/bin"
 
-echo "Copying $SCRIPT_NAME to $DEST_DIR..."
-sudo cp "$SRC_DIR/$SCRIPT_NAME" "$DEST_PATH"
+echo "Installing systemlogger..."
 
-sudo chmod +x "$DEST_PATH"
-echo "Made $DEST_PATH executable"
+sudo mkdir -p "$INSTALL_DIR"
 
-export PYTHONPATH=$PYTHONPATH:$DEST_DIR
-echo "Added $DEST_DIR to PYTHONPATH for current session"
+# Copy the Python file
+sudo cp "$(dirname "$0")/logcli.py" "$INSTALL_DIR/"
 
+# Create a symlink so it can be used as CLI
+sudo ln -sf "$INSTALL_DIR/logcli.py" "$BIN_DIR/logcli"
 
-echo "Setup complete! You can now run 'logcli' from anywhere and import it in Python."
+# Make sure it’s executable
+sudo chmod +x "$INSTALL_DIR/logcli.py"
+sudo chmod +x "$BIN_DIR/logcli"
+
+echo "✅ systemlogger installed!"
+echo "   - CLI available as: logcli"
+echo "   - Importable in Python via:"
+echo "       sys.path.append('/usr/local/lib/core')"
+echo "       from logcli import log_message"
