@@ -13,7 +13,6 @@ SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
 
 # Logging
 LOG_DIR="$SERVICE_PATH/logs"
-mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/setup_${SERVICE_NAME}_$(date +%Y%m%d_%H%M%S).log"
 
 # exec > >(tee -a "$LOG_FILE") 2>&1
