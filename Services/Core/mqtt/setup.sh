@@ -1,24 +1,36 @@
 #!/bin/bash
 set -e
 
-SERVICE_NAME="mqtt-core"
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+INSTALL_DIR="/usr/local/bin/core"
+BIN_DIR="/usr/local/bin"
+USER_HOME=$(eval echo "~$SUDO_USER")
 
-echo "[1/2] Installing mosquitto clients..."
-sudo apt-get update -y
-sudo apt-get install -y mosquitto mosquitto-clients
+echo "Installing mqtt_client..."
 
-echo "[1.5/2] Copying CLI script..."
-sudo cp "$SCRIPT_DIR/mqtt-cli.sh" /usr/local/bin/mqtt
-
-sudo chmod +x /usr/local/bin/mqtt
-
-echo "[2/2] Setting up .env..."
-if [ ! -f "$SCRIPT_DIR/.env" ]; then
-  cp "$SCRIPT_DIR/.env.example" "$SCRIPT_DIR/.env"
-  sudo cp "$SCRIPT_DIR/.env" /usr/local/bin/mqtt/.env
-  echo "✅ Copied .env.example → .env"
+sudo mkdir -p "$INSTALL_DIR"
+echo  "[3/5] Setting up the environment "
+if [ ! -f "$USER_HOME/mqtt.env" ]; then
+  echo " Copying .env.example to $USER_HOME/.mqtt.env "
+cp "$(dirname "$0")/.env" "$USER_HOME/.mqtt.env"
 fi
-sudo cp "$SCRIPT_DIR/.env" /usr/local/bin/.env
+# Copy the Python file
+sudo cp "$(dirname "$0")/mqtt_client.py" "$INSTALL_DIR/"
 
-echo "✅ MQTT Core service and CLI installed."
+# Create a symlink for CLI
+sudo ln -sf "$INSTALL_DIR/mqtt_client.py" "$BIN_DIR/mqtt"
+
+# Make it executable
+sudo chmod +x "$INSTALL_DIR/mqtt_client.py"
+sudo chmod +x "$BIN_DIR/mqtt"
+
+echo "✅ mqtt_client installed!"
+echo "   CLI available as: mqtt"
+echo "   Importable as: from mqtt_client import MQTTPublisher"
+echo
+echo "⚙️  To configure MQTT globally, export environment variables:"
+echo "   export MQTT_BROKER_HOST='your-broker'"
+echo "   export MQTT_BROKER_PORT=8883"
+echo "   export MQTT_BROKER_USERNAME='user'"
+echo "   export MQTT_BROKER_PASSWORD='pass'"
+echo
+echo "   Add them permanently to ~/.bashrc or /etc/environment if needed."
