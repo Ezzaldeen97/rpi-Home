@@ -26,7 +26,7 @@ They act as the backbone of the system that all plugin services depend on.
 #### Core Services Overview
 | Service | Description | Status |
 |----------|--------------|---------|
-| **MQTT Client** | Handles publishing and subscribing to MQTT topics. Provides a unified interface for communication between services. | ✅ Implemented |
+| **MQTT Client** | Handles publishing and connection to MQTT topics. Provides a unified interface for communication between services. | ✅ Implemented |
 | **System Logger** | Centralized logging utility used across all services for consistent log formatting and storage. | ✅ Implemented |
 | **Device Manager** | Manages device metadata, hardware information, and general configuration. | 🚧 To be implemented |
 | **Service Health Monitor** | Monitors the status and uptime of running services to ensure reliability and detect failures. | 🚧 To be implemented |
