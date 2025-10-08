@@ -4,8 +4,6 @@
 
 ![alt text](docs/Project_architecture.png)
 
----
-
 ## Features
 
 - **Plug & Play:** Easy setup on any Raspberry Pi.
@@ -14,13 +12,50 @@
 - **Expandable:** Future services can be added without modifying existing ones.
 - **Logging:** Each service logs its activity locally.
 
-## Current Services
+---
+## 🧩 Architecture Overview
 
-### Pi Metrics
-- Collects CPU, memory, storage, uptime, and network traffic.
-- Publishes data via MQTT.
-- Runs as a `systemd` service for automatic startup.
-- Logs metrics and activity to local log files.
+**RPi@Home** is built around two main layers of services:
+
+---
+
+### 🧠 Core Services
+Core Services provide the essential infrastructure — MQTT communication, logging, device management, and service health monitoring.  
+They act as the backbone of the system that all plugin services depend on.
+
+#### Core Services Overview
+| Service | Description | Status |
+|----------|--------------|---------|
+| **MQTT Client** | Handles publishing and connection to MQTT topics. Provides a unified interface for communication between services. | ✅ Implemented |
+| **System Logger** | Centralized logging utility used across all services for consistent log formatting and storage. | ✅ Implemented |
+| **Device Manager** | Manages device metadata, hardware information, and general configuration. | 🚧 To be implemented |
+| **Service Health Monitor** | Monitors the status and uptime of running services to ensure reliability and detect failures. | 🚧 To be implemented |
+| **Update Manager (OTAU)** | Enable over-the-air updates for services and system components.. | 🚧 To be implemented |
+
+
+---
+
+### 🧩 Plugin Services
+Plugin Services extend the system’s functionality by adding domain-specific features.  
+They can be added or removed independently without affecting the core infrastructure.
+
+#### Plugin Services Overview
+| Service | Description | Status |
+|----------|--------------|---------|
+| **Pi Metrics** | Collects CPU, memory, storage, uptime, and network usage metrics. Publishes data via MQTT. | ✅ Implemented |
+| **Sensors Reader** | Reads data from external sensors (e.g., temperature, humidity, or light). | 🚧 To be implemented |
+| **Notifications & Alerts** | Sends notifications or alerts based on events or thresholds (via MQTT, Telegram, etc.). | 🚧 To be implemented |
+| **Digital Pins Handler** | Manages Raspberry Pi GPIO digital input/output pins. | 🚧 To be implemented |
+| **Analog Pins Handler** | Handles analog input and output operations (e.g., ADC/DAC sensors and devices). | 🚧 To be implemented |
+
+---
+
+This modular structure makes **RPi@Home**:
+- **Scalable:** New services can be added easily  
+- **Maintainable:** Each service is independent and replaceable  
+- **Reliable:** Core infrastructure is stable and shared across modules
+
+
 
 ## Installation
 
@@ -38,11 +73,4 @@
   - Start the service
    
 
-
-## Future Services/Roadmap
-- Support physical sensors (tempreture, humidity,..etc)
-- Notification and Alerts service
-- Device Manager
-- Update Manager (OTAU)
-- Telegram bots for alerts
 
